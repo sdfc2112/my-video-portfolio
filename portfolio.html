@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的作品集</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fafafa;
+    --card: #fff;
+    --text: #222;
+    --text2: #666;
+    --border: #e0e0e0;
+    --accent: #e74c3c;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ===== 页面顶部 ===== */
+  .header {
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+  .header .avatar {
+    width: 90px; height: 90px; border-radius: 50%;
+    object-fit: cover; background: #ddd; margin: 0 auto 16px;
+    display: block;
+  }
+  .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
+  .header .role { font-size: 1rem; color: var(--text2); }
+  .header .bio {
+    max-width: 480px; margin: 12px auto 0;
+    font-size: 0.92rem; color: var(--text2);
+  }
+
+  /* ===== 视频网格 ===== */
+  .gallery {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 28px;
+    padding: 0 24px 60px;
+  }
+
+  /* ===== 单个作品卡片 ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.25s;
+  }
+  .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+
+  /* 视频容器 — 16:9 */
+  .card .video-wrap {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .card .video-wrap iframe,
+  .card .video-wrap video {
+    width: 100%; height: 100%; border: none; display: block;
+  }
+
+  /* 卡片文字 */
+  .card .info { padding: 18px; }
+  .card .info .cat {
+    font-size: 0.75rem; color: var(--accent); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .card .info h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+  .card .info p {
+    font-size: 0.88rem; color: var(--text2);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ===== 联系方式 & 页脚 ===== */
+  .footer {
+    text-align: center; padding: 30px 20px 50px;
+    color: var(--text2); font-size: 0.85rem;
+  }
+  .footer .contact {
+    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .footer .contact span { color: var(--text); }
+
+  /* ===== 手机适配 ===== */
+  @media (max-width: 480px) {
+    .header { padding: 40px 16px 24px; }
+    .header h1 { font-size: 1.4rem; }
+    .gallery { grid-template-columns: 1fr; padding: 0 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!--  👇 个人信息 — 把你的信息改这里                                   -->
+<!-- ================================================================ -->
+<header class="header">
+  <!-- 头像：把 photos/avatar.jpg 换成你的照片路径 -->
+  <img class="avatar" src="photos/avatar.jpg" alt="头像"
+       onerror="this.style.display='none'">
+  <h1>你的名字</h1>
+  <div class="role">视频剪辑 / 摄影师</div>
+  <p class="bio">
+    3年视频制作经验，擅长宣传片、活动记录、短视频剪辑。
+    熟练使用 Premiere Pro、After Effects、DaVinci Resolve。
+  </p>
+</header>
+
+
+<!-- ================================================================ -->
+<!--  👇 作品列表 — 每复制一块就是一个作品，改 3 个地方就行：          -->
+<!--     1. 视频地址 (src)                                              -->
+<!--     2. 作品标题 (<h3>...</h3>)                                     -->
+<!--     3. 作品描述 (<p>...</p>)                                       -->
+<!-- ================================================================ -->
+
+<section class="gallery">
+
+  <!-- ===== 作品 1 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <!-- 👇 把 src="videos/公益.mp4" 换成你的视频文件路径 -->
+      <video src="videos/公益.mp4" controls
+             style="width:100%;height:100%;display:block;">
+      </video>
+    </div>
+    <div class="info">
+      <div class="cat">公益短片</div>
+      <h3>公益短片</h3>
+      <p>公益主题视频作品。</p>
+    </div>
+  </div>
+
+  <!-- ===== 作品 2 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+    <div class="info">
+      <div class="cat">活动记录</div>
+      <h3>2024年度音乐节现场</h3>
+      <p>三天音乐节全程跟拍，多机位剪辑，成片8分钟，用于主办方官方宣传。</p>
+    </div>
+  </div>
+
+  <!-- ===== 作品 3 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+    <div class="info">
+      <div class="cat">短视频</div>
+      <h3>城市夜景转场合集</h3>
+      <p>抖音/小红书风格的快节奏城市转场短片，使用运动模糊和音效同步技术。</p>
+    </div>
+  </div>
+
+  <!-- ===== 作品 4 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+    <div class="info">
+      <div class="cat">Vlog</div>
+      <h3>一个人的旅行 — 云南篇</h3>
+      <p>个人旅行Vlog，记录大理、丽江10天行程，风格轻松治愈。</p>
+    </div>
+  </div>
+
+  <!-- ===== 作品 5 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+    <div class="info">
+      <div class="cat">产品拍摄</div>
+      <h3>无线耳机产品展示视频</h3>
+      <p>暗调布光 + 微距特写，突出产品质感。全片布光、拍摄、剪辑独立完成。</p>
+    </div>
+  </div>
+
+  <!-- ===== 作品 6 ===== -->
+  <div class="card">
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+    </div>
+    <div class="info">
+      <div class="cat">访谈</div>
+      <h3>创业人物访谈 — 李明</h3>
+      <p>双机位访谈拍摄，负责现场收音、灯光布置和后期精剪，成片15分钟。</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================================================================ -->
+<!--  👇 联系方式 — 改成你的                                          -->
+<!-- ================================================================ -->
+<footer class="footer">
+  <div class="contact">
+    <span>📧 yourname@email.com</span>
+    <span>📱 138-xxxx-xxxx</span>
+    <span>🔗 bilibili.com/@yourname</span>
+  </div>
+  <p>&copy; 2025 你的名字</p>
+</footer>
+
+</body>
+</html>

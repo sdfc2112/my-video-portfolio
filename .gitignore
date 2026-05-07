@@ -1,0 +1,6 @@
+# 不需要上传的文件
+bead_pattern.py
+test_*
+run_converter.bat
+video-blog.html
+.claude/
