@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>翻页闹钟</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    user-select: none;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .clock {
+    display: flex;
+    align-items: center;
+    gap: 4vmin;
+  }
+
+  .colon {
+    font-size: 14vmin;
+    color: #aaa;
+    font-weight: 300;
+    animation: colonPulse 1s step-end infinite;
+    margin-top: -2vmin;
+  }
+
+  @keyframes colonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+  }
+
+  /* ---- Digit Container ---- */
+  .digit-wrap {
+    position: relative;
+    width: 17vmin;
+    height: 24vmin;
+    border-radius: 2vmin;
+  }
+
+  /* half-card base */
+  .half {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    overflow: hidden;
+    background: #1e1e1e;
+  }
+
+  .half .txt {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20vmin;
+    font-weight: 700;
+    color: #e8e8e8;
+    text-shadow: 0 0 0.6vmin rgba(255,255,255,0.06);
+  }
+
+  /* Top static */
+  .top-static {
+    top: 0;
+    border-radius: 2vmin 2vmin 0 0;
+    border-bottom: 2px solid rgba(0,0,0,0.55);
+  }
+  .top-static .txt { top: 0; }
+
+  /* Bottom static */
+  .bottom-static {
+    top: 50%;
+    border-radius: 0 0 2vmin 2vmin;
+    border-top: 2px solid rgba(0,0,0,0.35);
+  }
+  .bottom-static .txt { bottom: 0; }
+
+  /* ---- Flipping card (top half that rotates forward) ---- */
+  .flap {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    overflow: hidden;
+    background: #1e1e1e;
+    border-radius: 2vmin 2vmin 0 0;
+    border-bottom: 2px solid rgba(0,0,0,0.55);
+    z-index: 10;
+    backface-visibility: hidden;
+    transform-origin: bottom center;
+    transform: rotateX(0deg);
+  }
+  .flap .txt {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20vmin;
+    font-weight: 700;
+    color: #e8e8e8;
+    text-shadow: 0 0 0.6vmin rgba(255,255,255,0.06);
+    top: 0;
+  }
+
+  /* ---- Inner shadow overlay on the digit wrap ---- */
+  .digit-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 2vmin;
+    pointer-events: none;
+    z-index: 25;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.18) 0%,
+        transparent 6%,
+        transparent 48%,
+        rgba(0,0,0,0.22) 49%,
+        rgba(0,0,0,0.30) 51%,
+        transparent 52%,
+        transparent 94%,
+        rgba(0,0,0,0.10) 100%
+      );
+  }
+
+  /* ---- Date ---- */
+  .date-display {
+    position: fixed;
+    top: 8vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #444;
+    font-size: 2.6vmin;
+    letter-spacing: 0.3vmin;
+    transition: opacity 0.6s;
+  }
+
+  /* ---- Hint ---- */
+  .hint {
+    position: fixed;
+    bottom: 6vmin;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #2a2a2a;
+    font-size: 1.9vmin;
+    transition: opacity 0.5s;
+  }
+
+  body:fullscreen .hint,
+  body:-webkit-full-screen .hint { opacity: 0; }
+</style>
+</head>
+<body>
+
+<div class="date-display" id="dateDisplay"></div>
+
+<div class="clock" id="clock">
+  <div class="digit-wrap" data-digit="h1">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+  <div class="digit-wrap" data-digit="h2">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+
+  <span class="colon">:</span>
+
+  <div class="digit-wrap" data-digit="m1">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+  <div class="digit-wrap" data-digit="m2">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+
+  <span class="colon">:</span>
+
+  <div class="digit-wrap" data-digit="s1">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+  <div class="digit-wrap" data-digit="s2">
+    <div class="half top-static"><span class="txt">0</span></div>
+    <div class="half bottom-static"><span class="txt">0</span></div>
+  </div>
+</div>
+
+<div class="hint" id="hint">单击全屏 &middot; 空格暂离 &middot; F 切换全屏</div>
+
+<script>
+  const clockEl = document.getElementById('clock');
+  const dateDisplay = document.getElementById('dateDisplay');
+  const hintEl = document.getElementById('hint');
+
+  let current = { h1: -1, h2: -1, m1: -1, m2: -1, s1: -1, s2: -1 };
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function getTimeDigits() {
+    const now = new Date();
+    const h = pad(now.getHours());
+    const m = pad(now.getMinutes());
+    const s = pad(now.getSeconds());
+    return { h1: h[0], h2: h[1], m1: m[0], m2: m[1], s1: s[0], s2: s[1], date: now };
+  }
+
+  const weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+  function updateDate(d) {
+    dateDisplay.textContent = `${d.getFullYear()}·${pad(d.getMonth()+1)}·${pad(d.getDate())}  ${weekdays[d.getDay()]}`;
+  }
+
+  /*
+   * Flip sequence (per digit):
+   * 1. Bottom-static.text → new digit (immediate, covered by flap)
+   * 2. Flap (old digit top) rotates 0°→180° over 300ms
+   * 3. At 150ms (midpoint), top-static.text → new digit
+   * 4. Flap removed after animation
+   */
+  function animateFlip(wrap, oldDigit, newDigit) {
+    // 1. Update bottom-static immediately
+    wrap.querySelector('.bottom-static .txt').textContent = newDigit;
+
+    // 2. Create flap showing old digit's top half
+    const flap = document.createElement('div');
+    flap.className = 'flap';
+    flap.innerHTML = `<span class="txt">${oldDigit}</span>`;
+    wrap.appendChild(flap);
+
+    // Force layout, then start rotation
+    flap.getBoundingClientRect();
+
+    const DURATION = 300; // ms for the full swing
+
+    flap.style.transition = `transform ${DURATION}ms linear`;
+    flap.style.transform = 'rotateX(180deg)';
+
+    // 3. At halfway, swap top-static to new digit (behind flap's back side)
+    setTimeout(() => {
+      wrap.querySelector('.top-static .txt').textContent = newDigit;
+    }, DURATION / 2);
+
+    // 4. Remove flap
+    setTimeout(() => {
+      flap.remove();
+    }, DURATION + 50);
+  }
+
+  function updateDigit(wrap, key, newDigit) {
+    const oldDigit = current[key];
+    if (oldDigit === newDigit) return;
+
+    if (oldDigit === -1) {
+      // First paint — no animation
+      wrap.querySelector('.top-static .txt').textContent = newDigit;
+      wrap.querySelector('.bottom-static .txt').textContent = newDigit;
+    } else {
+      animateFlip(wrap, oldDigit, newDigit);
+    }
+    current[key] = newDigit;
+  }
+
+  function tick() {
+    const { h1, h2, m1, m2, s1, s2, date } = getTimeDigits();
+    const map = { h1, h2, m1, m2, s1, s2 };
+    Object.entries(map).forEach(([key, val]) => {
+      updateDigit(document.querySelector(`[data-digit="${key}"]`), key, val);
+    });
+    updateDate(date);
+  }
+
+  // Init
+  (function init() {
+    const { h1, h2, m1, m2, s1, s2, date } = getTimeDigits();
+    Object.entries({ h1, h2, m1, m2, s1, s2 }).forEach(([key, val]) => {
+      const wrap = document.querySelector(`[data-digit="${key}"]`);
+      wrap.querySelector('.top-static .txt').textContent = val;
+      wrap.querySelector('.bottom-static .txt').textContent = val;
+      current[key] = val;
+    });
+    updateDate(date);
+  })();
+
+  setInterval(tick, 1000);
+
+  // ---- Interaction ----
+  let hideTimer;
+  let hidden = false;
+
+  function show() {
+    hidden = false;
+    clockEl.style.opacity = '1';
+    dateDisplay.style.opacity = '1';
+  }
+  function hide() {
+    hidden = true;
+    clockEl.style.opacity = '0';
+    dateDisplay.style.opacity = '0';
+  }
+
+  document.addEventListener('mousemove', () => {
+    if (hidden) show();
+    hintEl.style.opacity = '1';
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => hintEl.style.opacity = '0', 3000);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      hidden ? show() : hide();
+    }
+    if (e.code === 'KeyF') {
+      document.fullscreenElement
+        ? document.exitFullscreen()
+        : document.documentElement.requestFullscreen();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  });
+
+  document.addEventListener('dblclick', () => {
+    document.fullscreenElement
+      ? document.exitFullscreen()
+      : document.documentElement.requestFullscreen();
+  });
+
+  setTimeout(() => { hintEl.style.opacity = '0'; }, 8000);
+</script>
+</body>
+</html>
