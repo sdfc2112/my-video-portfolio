@@ -331,5 +331,15 @@
   <p>&copy; 2025 黄闻琛</p>
 </footer>
 
+<script>
+  // 点击播放一个视频时，暂停其他所有视频
+  document.querySelectorAll('video').forEach(v => {
+    v.addEventListener('play', () => {
+      document.querySelectorAll('video').forEach(other => {
+        if (other !== v) other.pause();
+      });
+    });
+  });
+</script>
 </body>
 </html>
