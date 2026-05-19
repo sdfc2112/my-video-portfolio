@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的作品集</title>
+<title>黄文琛 — 视频作品集</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,7 +13,7 @@
     --text: #222;
     --text2: #666;
     --border: #e0e0e0;
-    --accent: #e74c3c;
+    --accent: #c0392b;
     --radius: 10px;
   }
 
@@ -37,17 +37,29 @@
   .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
   .header .role { font-size: 1rem; color: var(--text2); }
   .header .bio {
-    max-width: 480px; margin: 12px auto 0;
+    max-width: 520px; margin: 12px auto 0;
     font-size: 0.92rem; color: var(--text2);
+  }
+
+  /* ===== 分类标题 ===== */
+  .section-title {
+    max-width: 1200px; margin: 0 auto 16px;
+    padding: 0 24px;
+    font-size: 1.15rem; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: ''; display: block; width: 4px; height: 20px;
+    background: var(--accent); border-radius: 2px;
   }
 
   /* ===== 视频网格 ===== */
   .gallery {
-    max-width: 1200px; margin: 0 auto;
+    max-width: 1200px; margin: 0 auto 40px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 28px;
-    padding: 0 24px 60px;
+    padding: 0 24px;
   }
 
   /* ===== 单个作品卡片 ===== */
@@ -60,30 +72,27 @@
   }
   .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
 
-  /* 视频容器 — 16:9 */
   .card .video-wrap {
     position: relative; width: 100%; aspect-ratio: 16 / 9;
     background: #000;
   }
-  .card .video-wrap iframe,
   .card .video-wrap video {
     width: 100%; height: 100%; border: none; display: block;
   }
 
-  /* 卡片文字 */
   .card .info { padding: 18px; }
   .card .info .cat {
     font-size: 0.75rem; color: var(--accent); font-weight: 600;
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+    letter-spacing: 1px; margin-bottom: 4px;
   }
-  .card .info h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+  .card .info h3 { font-size: 1.0rem; font-weight: 600; margin-bottom: 6px; }
   .card .info p {
-    font-size: 0.88rem; color: var(--text2);
+    font-size: 0.85rem; color: var(--text2);
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  /* ===== 联系方式 & 页脚 ===== */
+  /* ===== 页脚 ===== */
   .footer {
     text-align: center; padding: 30px 20px 50px;
     color: var(--text2); font-size: 0.85rem;
@@ -94,7 +103,6 @@
   }
   .footer .contact span { color: var(--text); }
 
-  /* ===== 手机适配 ===== */
   @media (max-width: 480px) {
     .header { padding: 40px 16px 24px; }
     .header h1 { font-size: 1.4rem; }
@@ -104,129 +112,223 @@
 </head>
 <body>
 
-<!-- ================================================================ -->
-<!--  👇 个人信息 — 把你的信息改这里                                   -->
-<!-- ================================================================ -->
+<!-- ===== 个人信息 ===== -->
 <header class="header">
-  <!-- 头像：把 photos/avatar.jpg 换成你的照片路径 -->
-  <img class="avatar" src="photos/avatar.jpg" alt="头像"
-       onerror="this.style.display='none'">
-  <h1>你的名字</h1>
-  <div class="role">视频剪辑 / 摄影师</div>
+  <img class="avatar" src="photos/avatar.jpg" alt="头像" onerror="this.style.display='none'">
+  <h1>黄文琛</h1>
+  <div class="role">视频剪辑 / 后期制作</div>
   <p class="bio">
-    3年视频制作经验，擅长宣传片、活动记录、短视频剪辑。
+    专注宣传片、公益短片、活动记录等视频制作。
     熟练使用 Premiere Pro、After Effects、DaVinci Resolve。
   </p>
 </header>
 
-
-<!-- ================================================================ -->
-<!--  👇 作品列表 — 每复制一块就是一个作品，改 3 个地方就行：          -->
-<!--     1. 视频地址 (src)                                              -->
-<!--     2. 作品标题 (<h3>...</h3>)                                     -->
-<!--     3. 作品描述 (<p>...</p>)                                       -->
-<!-- ================================================================ -->
-
+<!-- ===== 宣传片 ===== -->
+<h2 class="section-title">宣传片</h2>
 <section class="gallery">
 
-  <!-- ===== 作品 1 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <!-- 👇 把 src="videos/公益.mp4" 换成你的视频文件路径 -->
-      <video src="videos/公益.mp4" controls
-             style="width:100%;height:100%;display:block;">
-      </video>
+      <video src="videos/20250427_《福·见》“福文化”.mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">公益短片</div>
-      <h3>公益短片</h3>
-      <p>公益主题视频作品。</p>
+      <div class="cat">品牌宣传</div>
+      <h3>福建福彩宣传片《福·见》</h3>
+      <p>福文化主题品牌宣传片，展现福建福彩的公益理念与文化底蕴。</p>
     </div>
   </div>
 
-  <!-- ===== 作品 2 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              allow="autoplay; encrypted-media" allowfullscreen>
-      </iframe>
+      <video src="videos/20250501_《不凡的你-中国福彩致敬一线福彩人》.mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">活动记录</div>
-      <h3>2024年度音乐节现场</h3>
-      <p>三天音乐节全程跟拍，多机位剪辑，成片8分钟，用于主办方官方宣传。</p>
+      <div class="cat">品牌宣传</div>
+      <h3>致敬一线福彩人</h3>
+      <p>五一劳动节主题短片，展现福彩一线工作者的坚守与奉献。</p>
     </div>
   </div>
 
-  <!-- ===== 作品 3 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              allow="autoplay; encrypted-media" allowfullscreen>
-      </iframe>
+      <video src="videos/20250321_最终.mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">短视频</div>
-      <h3>城市夜景转场合集</h3>
-      <p>抖音/小红书风格的快节奏城市转场短片，使用运动模糊和音效同步技术。</p>
+      <div class="cat">活动宣传</div>
+      <h3>快乐8 680万赠票活动</h3>
+      <p>"快乐爆棚 好运加倍"福建福彩快乐8游戏赠票活动宣传片。</p>
     </div>
   </div>
 
-  <!-- ===== 作品 4 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              allow="autoplay; encrypted-media" allowfullscreen>
-      </iframe>
+      <video src="videos/20250526_热嗨3D 瓜分一夏(2).mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">Vlog</div>
-      <h3>一个人的旅行 — 云南篇</h3>
-      <p>个人旅行Vlog，记录大理、丽江10天行程，风格轻松治愈。</p>
+      <div class="cat">活动宣传</div>
+      <h3>热嗨3D·瓜分一夏</h3>
+      <p>福建福彩3D游戏1500万派奖活动宣传片。</p>
     </div>
   </div>
 
-  <!-- ===== 作品 5 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              allow="autoplay; encrypted-media" allowfullscreen>
-      </iframe>
+      <video src="videos/20250530_3d精品视频实拍8.mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">产品拍摄</div>
-      <h3>无线耳机产品展示视频</h3>
-      <p>暗调布光 + 微距特写，突出产品质感。全片布光、拍摄、剪辑独立完成。</p>
+      <div class="cat">活动宣传</div>
+      <h3>3D精品视频实拍</h3>
+      <p>3D游戏精品实拍宣传视频，展示活动细节与奖品。</p>
     </div>
   </div>
 
-  <!-- ===== 作品 6 ===== -->
   <div class="card">
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              allow="autoplay; encrypted-media" allowfullscreen>
-      </iframe>
+      <video src="videos/20251210_12月快乐8赠票活动(2).mp4" controls preload="none"></video>
     </div>
     <div class="info">
-      <div class="cat">访谈</div>
-      <h3>创业人物访谈 — 李明</h3>
-      <p>双机位访谈拍摄，负责现场收音、灯光布置和后期精剪，成片15分钟。</p>
+      <div class="cat">活动宣传</div>
+      <h3>快乐8 800万元赠票活动</h3>
+      <p>福建福彩"快乐8"800万元赠票活动宣传片。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20250918_地推预热横屏.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">活动宣传</div>
+      <h3>"福海扬帆 益路启航"地推预热</h3>
+      <p>福建福彩公益主题活动六城联动的预热宣传片。</p>
     </div>
   </div>
 
 </section>
 
+<!-- ===== 公益短片 ===== -->
+<h2 class="section-title">公益短片</h2>
+<section class="gallery">
 
-<!-- ================================================================ -->
-<!--  👇 联系方式 — 改成你的                                          -->
-<!-- ================================================================ -->
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20250617_《随手公益，小亦可为》.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">公益</div>
+      <h3>随手公益，小亦可为</h3>
+      <p>倡导"随手公益"理念，记录普通人参与公益的温暖瞬间。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20250828_发布版横屏.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">公益</div>
+      <h3>"双色球·送你一朵小红花"公益捐赠</h3>
+      <p>福建南平公益捐赠活动现场记录，展现福彩公益力量。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20251119_合版后.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">公益</div>
+      <h3>"福暖家园 益路花开"公益活动</h3>
+      <p>探访福州市儿童福利院，记录福彩公益活动的温暖时刻。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/公益.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">公益</div>
+      <h3>公益短片</h3>
+      <p>公益主题视频作品。</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== 责任彩票 ===== -->
+<h2 class="section-title">责任彩票</h2>
+<section class="gallery">
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20251219_责彩视频1.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">责任彩票</div>
+      <h3>理性购彩 乐享公益</h3>
+      <p>倡导理性购彩理念，引导公众正确认识彩票的公益属性。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20251219_责彩视频2.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">责任彩票</div>
+      <h3>禁止向未成年人售彩和兑奖</h3>
+      <p>责任彩票精品视频，呼吁全社会保护未成年人。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20251219_责彩视频3.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">责任彩票</div>
+      <h3>打击非法彩票 守护财产安全</h3>
+      <p>警示非法彩票危害，引导彩民通过正规渠道购彩。</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== 网点风采 ===== -->
+<h2 class="section-title">网点风采</h2>
+<section class="gallery">
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20250924_发布版.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">网点展示</div>
+      <h3>古厝里的福彩店</h3>
+      <p>福州市上下杭福彩销售网点，展现古厝文化与福彩的融合。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="video-wrap">
+      <video src="videos/20251219_5db1070cbf55a6a02a83ecc0e932a255_raw.mp4" controls preload="none"></video>
+    </div>
+    <div class="info">
+      <div class="cat">网点展示</div>
+      <h3>坚守公益初心 打造优秀网点</h3>
+      <p>泉州市鲤城区福彩优秀销售网点展示。</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== 联系方式 ===== -->
 <footer class="footer">
   <div class="contact">
-    <span>📧 yourname@email.com</span>
-    <span>📱 138-xxxx-xxxx</span>
-    <span>🔗 bilibili.com/@yourname</span>
+    <span>📧 1205856025@qq.com</span>
   </div>
-  <p>&copy; 2025 你的名字</p>
+  <p>&copy; 2025 黄文琛</p>
 </footer>
 
 </body>
