@@ -29,10 +29,28 @@
     text-align: center;
     padding: 60px 20px 40px;
   }
+  .header .avatar-wrap {
+    position: relative; display: inline-block;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
   .header .avatar {
     width: 90px; height: 90px; border-radius: 50%;
-    object-fit: cover; background: #ddd; margin: 0 auto 16px;
-    display: block;
+    object-fit: cover; background: #ddd; display: block;
+    transition: transform 0.2s;
+  }
+  .header .avatar-wrap:hover .avatar {
+    transform: scale(1.05);
+  }
+  .header .avatar-wrap:hover .switch-label {
+    background: #444;
+  }
+  .switch-label {
+    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+    background: #333; color: #fff; font-size: 0.75rem;
+    padding: 3px 14px; border-radius: 14px;
+    white-space: nowrap; pointer-events: none;
+    transition: background 0.2s;
   }
   .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
   .header .role { font-size: 1rem; color: var(--text2); }
@@ -91,6 +109,14 @@
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  /* 占位卡片 */
+  .card-placeholder .video-wrap {
+    background: #f0f0f0; display: flex; align-items: center; justify-content: center;
+    color: #aaa; font-size: 0.85rem;
+  }
+
+  /* ===== 模式切换 ===== */
+  #student-content { display: none; }
 
   /* ===== 页脚 ===== */
   .footer {
@@ -114,14 +140,23 @@
 
 <!-- ===== 个人信息 ===== -->
 <header class="header">
-  <img class="avatar" src="photos/avatar.jpg" alt="头像" onerror="this.style.display='none'">
-  <h1>黄闻琛</h1>
-  <div class="role">视频编导 / 摄影 / 剪辑</div>
-  <p class="bio">
-    专注宣传片、公益短片、活动记录等视频制作。
+  <div class="avatar-wrap" id="avatarBtn" title="点击切换作品集">
+    <img class="avatar" id="avatarImg" src="photos/avatar-work.jpg" alt="头像"
+         onerror="this.style.display='none'">
+    <span class="switch-label">切换</span>
+  </div>
+  <h1 id="modeName">黄闻琛</h1>
+  <div class="role" id="modeRole">视频编导 / 摄影 / 剪辑</div>
+  <p class="bio" id="modeBio">
+    专注宣传片、公益短片、活动记录等视频制作。<br>
     熟练使用 Premiere Pro、After Effects、DaVinci Resolve。
   </p>
 </header>
+
+<!-- ============================ -->
+<!--  工作作品集                   -->
+<!-- ============================ -->
+<div id="work-content">
 
 <!-- ===== 宣传片 ===== -->
 <h2 class="section-title">宣传片</h2>
@@ -322,6 +357,71 @@
   </div>
 
 </section>
+</div><!-- /#work-content -->
+
+<!-- ============================ -->
+<!--  大学作品集                   -->
+<!-- ============================ -->
+<div id="student-content">
+
+  <h2 class="section-title">课程作业</h2>
+  <section class="gallery">
+    <!-- 占位：把你的大学视频放进这里 -->
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">课程作业</div>
+        <h3>作品名称</h3>
+        <p>把你的学生时期视频文件放到 videos/ 文件夹，然后在这里替换。</p>
+      </div>
+    </div>
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">课程作业</div>
+        <h3>作品名称</h3>
+        <p>描述你的作品内容。</p>
+      </div>
+    </div>
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">课程作业</div>
+        <h3>作品名称</h3>
+        <p>描述你的作品内容。</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">短片练习</h2>
+  <section class="gallery">
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">短片</div>
+        <h3>作品名称</h3>
+        <p>描述你的作品内容。</p>
+      </div>
+    </div>
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">短片</div>
+        <h3>作品名称</h3>
+        <p>描述你的作品内容。</p>
+      </div>
+    </div>
+    <div class="card card-placeholder">
+      <div class="video-wrap">📹 待添加视频</div>
+      <div class="info">
+        <div class="cat">短片</div>
+        <h3>作品名称</h3>
+        <p>描述你的作品内容。</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /#student-content -->
 
 <!-- ===== 联系方式 ===== -->
 <footer class="footer">
@@ -332,13 +432,59 @@
 </footer>
 
 <script>
-  // 点击播放一个视频时，暂停其他所有视频
-  document.querySelectorAll('video').forEach(v => {
-    v.addEventListener('play', () => {
-      document.querySelectorAll('video').forEach(other => {
-        if (other !== v) other.pause();
+  // ===== 切换工作 / 学生作品集 =====
+  const avatarBtn = document.getElementById('avatarBtn');
+  const avatarImg = document.getElementById('avatarImg');
+  const modeName  = document.getElementById('modeName');
+  const modeRole  = document.getElementById('modeRole');
+  const modeBio   = document.getElementById('modeBio');
+  const workContent   = document.getElementById('work-content');
+  const studentContent = document.getElementById('student-content');
+
+  let isWorkMode = true;
+
+  // 两套信息 — 改成你自己的
+  const workInfo = {
+    avatar: 'photos/avatar-work.jpg',
+    name: '黄闻琛',
+    role: '视频编导 / 摄影 / 剪辑',
+    bio: '专注宣传片、公益短片、活动记录等视频制作。<br>熟练使用 Premiere Pro、After Effects、DaVinci Resolve。'
+  };
+  const studentInfo = {
+    avatar: 'photos/avatar-student.jpg',        // 换成你的学生时期照片
+    name: '黄闻琛',
+    role: '数字媒体专业 — 在读学生',
+    bio: '大学期间主修数字媒体，学习视频拍摄与后期制作。<br>熟练使用 Premiere Pro、剪映等工具。'
+  };
+
+  avatarBtn.addEventListener('click', () => {
+    isWorkMode = !isWorkMode;
+    const info = isWorkMode ? workInfo : studentInfo;
+    avatarImg.src = info.avatar;
+    modeName.textContent  = info.name;
+    modeRole.textContent  = info.role;
+    modeBio.innerHTML     = info.bio;
+    workContent.style.display   = isWorkMode ? '' : 'none';
+    studentContent.style.display = isWorkMode ? 'none' : '';
+    // 滚动到顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== 同一时间只能播放一个视频 =====
+  function bindSinglePlay() {
+    document.querySelectorAll('video').forEach(v => {
+      v.addEventListener('play', () => {
+        document.querySelectorAll('video').forEach(other => {
+          if (other !== v) other.pause();
+        });
       });
     });
+  }
+  bindSinglePlay();
+  // 切换后重新绑定（DOM 变化后）
+  const observer = new MutationObserver(() => bindSinglePlay());
+  document.querySelectorAll('#work-content, #student-content').forEach(el => {
+    observer.observe(el, { childList: true, subtree: true });
   });
 </script>
 </body>
