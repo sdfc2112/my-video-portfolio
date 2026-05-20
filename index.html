@@ -33,24 +33,22 @@
     position: relative; display: inline-block;
     cursor: pointer;
     margin-bottom: 16px;
-  }
-  .header .avatar {
-    width: 90px; height: 90px; border-radius: 50%;
-    object-fit: cover; background: #ddd; display: block;
-    transition: transform 0.2s;
+    width: 96px; height: 96px;
   }
   .header .avatar-wrap:hover .avatar {
-    transform: scale(1.05);
+    filter: brightness(0.85);
   }
-  .header .avatar-wrap:hover .switch-label {
-    background: #444;
+  .header .avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    object-fit: cover; background: #ddd; display: block;
+    transition: filter 0.2s;
   }
   .switch-label {
-    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-    background: #333; color: #fff; font-size: 0.75rem;
-    padding: 3px 14px; border-radius: 14px;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6); color: #fff; font-size: 0.8rem;
+    padding: 6px 18px; border-radius: 16px;
     white-space: nowrap; pointer-events: none;
-    transition: background 0.2s;
+    letter-spacing: 1px;
   }
   .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
   .header .role { font-size: 1rem; color: var(--text2); }
@@ -141,9 +139,9 @@
 <!-- ===== 个人信息 ===== -->
 <header class="header">
   <div class="avatar-wrap" id="avatarBtn" title="点击切换作品集">
-    <img class="avatar" id="avatarImg" src="photos/avatar-work.jpg" alt="头像"
-         onerror="this.style.display='none'">
-    <span class="switch-label">切换</span>
+    <img class="avatar" id="avatarImg" src="photos/avatar-student.jpg" alt="头像"
+         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22><rect fill=%22%23ddd%22 width=%2296%22 height=%2296%22/><text x=%2250%%22 y=%2255%%22 text-anchor=%22middle%22 font-size=%2236%22>👤</text></svg>'">
+    <span class="switch-label">切 换</span>
   </div>
   <h1 id="modeName">黄闻琛</h1>
   <div class="role" id="modeRole">视频编导 / 摄影 / 剪辑</div>
@@ -445,7 +443,7 @@
 
   // 两套信息 — 改成你自己的
   const workInfo = {
-    avatar: 'photos/avatar-work.jpg',
+    avatar: 'photos/avatar-student.jpg',
     name: '黄闻琛',
     role: '视频编导 / 摄影 / 剪辑',
     bio: '专注宣传片、公益短片、活动记录等视频制作。<br>熟练使用 Premiere Pro、After Effects、DaVinci Resolve。'
