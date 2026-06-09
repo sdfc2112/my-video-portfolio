@@ -143,6 +143,7 @@
          onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22><rect fill=%22%23ddd%22 width=%2296%22 height=%2296%22/><text x=%2250%%22 y=%2255%%22 text-anchor=%22middle%22 font-size=%2236%22>👤</text></svg>'">
     <span class="switch-label">切 换</span>
   </div>
+  <div id="switchHint" style="font-size:0.75rem;color:#bbb;margin-top:2px;">点击头像切换学生时期作品集</div>
   <h1 id="modeName">黄闻琛</h1>
   <div class="role" id="modeRole">视频编导 / 摄影 / 剪辑</div>
   <p class="bio" id="modeBio">
@@ -439,6 +440,8 @@
   const workContent   = document.getElementById('work-content');
   const studentContent = document.getElementById('student-content');
 
+  const switchHint = document.getElementById('switchHint');
+
   let isWorkMode = true;
 
   // 两套信息 — 改成你自己的
@@ -446,13 +449,15 @@
     avatar: 'photos/avatar-student.jpg',
     name: '黄闻琛',
     role: '视频编导 / 摄影 / 剪辑',
-    bio: '专注宣传片、公益短片、活动记录等视频制作。<br>熟练使用 Premiere Pro、After Effects、DaVinci Resolve。'
+    bio: '专注宣传片、公益短片、活动记录等视频制作。<br>熟练使用 Premiere Pro、After Effects、DaVinci Resolve。',
+    hint: '点击头像切换学生时期作品集'
   };
   const studentInfo = {
     avatar: 'photos/avatar-student.jpg',        // 换成你的学生时期照片
     name: '黄闻琛',
     role: '数字媒体专业 — 在读学生',
-    bio: '大学期间主修数字媒体，学习视频拍摄与后期制作。<br>熟练使用 Premiere Pro、剪映等工具。'
+    bio: '大学期间主修数字媒体，学习视频拍摄与后期制作。<br>熟练使用 Premiere Pro、剪映等工具。',
+    hint: '点击头像切换工作时期作品集'
   };
 
   avatarBtn.addEventListener('click', () => {
@@ -462,6 +467,7 @@
     modeName.textContent  = info.name;
     modeRole.textContent  = info.role;
     modeBio.innerHTML     = info.bio;
+    switchHint.textContent = info.hint;
     workContent.style.display   = isWorkMode ? '' : 'none';
     studentContent.style.display = isWorkMode ? 'none' : '';
     // 滚动到顶部
