@@ -64,19 +64,11 @@
     scroll-snap-align: start;
     overflow: hidden;
   }
-  .hero-slide video,
-  .hero-bg {
+  .hero-slide video {
     position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: cover;
     filter: none;
-  }
-  .hero-bg {
-    animation: kenburns 12s ease-in-out infinite alternate;
-  }
-  @keyframes kenburns {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.08); }
   }
   .hero-overlay {
     position: absolute; top: 0; left: 0; z-index: 5;
@@ -350,7 +342,9 @@
   </div>
   <!-- 第一页 -->
   <section class="hero-slide" data-full="videos/地推预热横屏_full.mp4" data-title='"福海扬帆 益路启航" 地推预热' data-desc="福建福彩公益主题活动即将登陆福建六城，敬请期待！">
-    <img src="videos/poster_hero.jpg" alt="" class="hero-bg">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="videos/封面循环_hero.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay">
       <h1>黄闻琛</h1>
       <h2>作品集</h2>
@@ -364,7 +358,9 @@
   </section>
   <!-- 第二页 -->
   <section class="hero-slide" data-full="videos/福见_福文化_full.mp4" data-title='宣传片《福·见》' data-desc="福建福彩宣传片《福·见》，展现福文化的深厚底蕴。">
-    <img src="videos/poster_fujian.jpg" alt="" class="hero-bg">
+    <video muted loop playsinline preload="auto">
+      <source src="videos/福见_封面循环.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay">
       <h1>黄闻琛</h1>
       <h2>作品集</h2>
@@ -374,7 +370,9 @@
   </section>
   <!-- 第三页 -->
   <section class="hero-slide" data-full="videos/责彩_禁止未成年人_full.mp4" data-title='责任彩票' data-desc="禁止向未成年人售彩和兑奖，保护未成年人健康成长。">
-    <img src="videos/poster_zecai.jpg" alt="" class="hero-bg">
+    <video muted loop playsinline preload="auto">
+      <source src="videos/责彩_禁止未成年人_封面循环.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay">
       <h1>黄闻琛</h1>
       <h2>作品集</h2>
@@ -416,7 +414,7 @@
     <div class="gallery">
       <div class="card" data-video="videos/地推预热横屏_full.mp4" data-title="福海扬帆 益路启航" data-desc="福建福彩公益主题活动六城联动预热宣传片。">
         <div class="thumb-wrap">
-          <video src="videos/地推预热横屏_full.mp4" poster="videos/thumbs/20250918_地推预热横屏.jpg" muted loop playsinline preload="none"></video>
+          <video src="videos/封面循环_hero.mp4" poster="videos/thumbs/20250918_地推预热横屏.jpg" muted loop playsinline preload="none"></video>
           <div class="play-icon"></div>
         </div>
         <div class="info">
@@ -427,7 +425,7 @@
       </div>
       <div class="card" data-video="videos/福见_福文化_full.mp4" data-title="宣传片《福·见》" data-desc="福建福彩宣传片《福·见》，展现福文化的深厚底蕴。">
         <div class="thumb-wrap">
-          <video src="videos/福见_福文化_full.mp4" poster="videos/thumbs/20250427_《福·见》"福文化".jpg" muted loop playsinline preload="none"></video>
+          <video src="videos/福见_封面循环.mp4" poster="videos/thumbs/20250427_《福·见》"福文化".jpg" muted loop playsinline preload="none"></video>
           <div class="play-icon"></div>
         </div>
         <div class="info">
@@ -558,7 +556,7 @@
       </div>
       <div class="card" data-video="videos/责彩_禁止未成年人_full.mp4" data-title="责任彩票" data-desc="禁止向未成年人售彩和兑奖，保护未成年人健康成长。">
         <div class="thumb-wrap">
-          <video src="videos/责彩_禁止未成年人_full.mp4" poster="videos/thumbs/20251219_责彩视频2.jpg" muted loop playsinline preload="none"></video>
+          <video src="videos/责彩_禁止未成年人_封面循环.mp4" poster="videos/thumbs/20251219_责彩视频2.jpg" muted loop playsinline preload="none"></video>
           <div class="play-icon"></div>
         </div>
         <div class="info">
