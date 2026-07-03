@@ -8,545 +8,908 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #fafafa;
-    --card: #fff;
-    --text: #222;
-    --text2: #666;
-    --border: #e0e0e0;
-    --accent: #c0392b;
-    --radius: 10px;
+    --accent: #d4a574;
+    --accent2: #c0392b;
+    --dark: #0a0a0a;
+    --dark2: #111;
+    --card-bg: #1a1a1a;
+    --text: #e0e0e0;
+    --text2: #999;
+    --border: #2a2a2a;
+    --radius: 8px;
   }
 
   body {
     font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-    background: var(--bg);
+    background: var(--dark);
     color: var(--text);
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  /* ===== 页面顶部 ===== */
-  .header {
-    text-align: center;
-    padding: 60px 20px 40px;
+  /* ===== 导航栏 ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.3s;
   }
-  .header .avatar-wrap {
-    position: relative; display: inline-block;
+  .nav-logo {
+    font-size: 1.4rem; font-weight: 700; letter-spacing: 3px;
+    color: #fff; text-decoration: none;
+    transition: color 0.25s;
+  }
+  .nav-logo:hover { color: #000; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.9); text-decoration: none; font-size: 1.15rem;
+    font-weight: 600; letter-spacing: 2px; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: #000; }
+
+  /* ===== 主视觉 Hero ===== */
+  .hero-wrapper {
+    width: 100%; height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  .hero-wrapper::-webkit-scrollbar { display: none; }
+  .hero-slide {
+    position: relative; width: 100%; height: 100vh;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+  .hero-slide video {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: none;
+  }
+  .hero-overlay {
+    position: absolute; top: 0; left: 0; z-index: 5;
+    display: flex; flex-direction: column; justify-content: center;
+    height: 100%; width: 100%;
+    text-align: left; padding: 0 8vw;
+    pointer-events: none;
+  }
+  .hero-overlay h1,
+  .hero-overlay h2,
+  .hero-overlay .subtitle { pointer-events: auto; }
+  .hero-overlay .hero-enter,
+  .hero-overlay .hero-goto { pointer-events: auto; }
+  .page-dots {
+    position: fixed; top: 50%; right: 30px; z-index: 10;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .page-dots .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.35); cursor: pointer;
+    transition: all 0.3s;
+  }
+  .page-dots .dot.active {
+    background: rgba(255,255,255,0.9);
+    transform: scale(1.4);
+  }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; z-index: 5;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; color: rgba(255,255,255,0.5);
+    font-size: 0.75rem; letter-spacing: 2px;
+    animation: float 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-scroll span { display: block; width: 1px; height: 30px; background: rgba(255,255,255,0.35); }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+  .hero-overlay h1 {
+    font-size: clamp(3rem, 7vw, 5rem); font-weight: 700;
+    color: #fff; letter-spacing: 8px;
+    margin-bottom: 0;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .hero-overlay h2 {
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 400;
+    color: rgba(255,255,255,0.9); letter-spacing: 10px;
+    margin-bottom: 2px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+  .hero-overlay .subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem); color: rgba(255,255,255,0.65);
+    letter-spacing: 4px; margin-bottom: 48px;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .hero-enter,
+  .hero-goto {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
+    color: #fff; font-size: 0.95rem;
+    letter-spacing: 3px;
     cursor: pointer;
-    margin-bottom: 16px;
-    width: 96px; height: 96px;
+    text-decoration: none;
+    transition: all 0.35s;
+    background: transparent;
+    backdrop-filter: blur(4px);
   }
-  .header .avatar-wrap:hover .avatar {
-    filter: brightness(0.85);
+  .hero-enter {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.7);
   }
-  .header .avatar {
-    width: 96px; height: 96px; border-radius: 50%;
-    object-fit: cover; background: #ddd; display: block;
-    transition: filter 0.2s;
-  }
-  .switch-label {
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.55); color: #fff; font-size: 0.75rem;
-    padding: 5px 20px; border-radius: 0 0 48px 48px;
-    white-space: nowrap; pointer-events: none;
-    letter-spacing: 1px; width: 96px; text-align: center;
-  }
-  .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
-  .header .role { font-size: 1rem; color: var(--text2); }
-  .header .bio {
-    max-width: 520px; margin: 12px auto 0;
-    font-size: 0.92rem; color: var(--text2);
+  .hero-enter:hover,
+  .hero-goto:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.8);
+    transform: scale(1.04);
   }
 
-  /* ===== 分类标题 ===== */
-  .section-title {
-    max-width: 1200px; margin: 0 auto 16px;
-    padding: 0 24px;
-    font-size: 1.15rem; font-weight: 600;
-    display: flex; align-items: center; gap: 8px;
+
+  /* ===== 详细播放区 (点击进入) ===== */
+  .player-section {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: #000;
+    flex-direction: column; align-items: center; justify-content: center;
   }
-  .section-title::before {
-    content: ''; display: block; width: 4px; height: 20px;
-    background: var(--accent); border-radius: 2px;
+  .player-section.active { display: flex; }
+  .player-close {
+    position: absolute; top: 24px; right: 32px; z-index: 10;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-size: 1.3rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.25s;
+  }
+  .player-close:hover { background: rgba(255,255,255,0.18); }
+  .player-wrapper {
+    width: min(92vw, 1200px);
+    aspect-ratio: 16 / 9;
+    background: #000;
+    position: relative;
+  }
+  .player-wrapper video {
+    width: 100%; height: 100%; display: block;
+  }
+  .player-info {
+    margin-top: 20px; text-align: center;
+  }
+  .player-info h3 { font-size: 1.2rem; color: #fff; margin-bottom: 6px; }
+  .player-info p { color: #888; font-size: 0.9rem; }
+
+  /* ===== 内容区 ===== */
+  .section {
+    max-width: 1200px; margin: 0 auto; padding: 80px 24px;
+  }
+  .section-header {
+    text-align: center; margin-bottom: 48px;
+  }
+  .section-header h3 {
+    font-size: 1.5rem; font-weight: 600; letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .section-header .line {
+    width: 40px; height: 2px; background: var(--accent);
+    margin: 0 auto; border-radius: 1px;
+  }
+
+  /* ===== 个人信息卡片 ===== */
+  .profile-card {
+    display: flex; align-items: center; gap: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px; max-width: 700px; margin: 0 auto;
+  }
+  .profile-card .avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+  }
+  .profile-card .info h4 { font-size: 1.2rem; margin-bottom: 4px; }
+  .profile-card .info .role { color: var(--accent); font-size: 0.9rem; }
+  .profile-card .qrcode {
+    width: 100px; height: 100px; border-radius: 6px;
+    flex-shrink: 0; margin-left: auto;
   }
 
   /* ===== 视频网格 ===== */
   .gallery {
-    max-width: 1200px; margin: 0 auto 40px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 28px;
-    padding: 0 24px;
+    content-visibility: auto;
+    contain-intrinsic-size: 300px;
   }
-
-  /* ===== 单个作品卡片 ===== */
   .card {
-    background: var(--card);
+    background: var(--card-bg);
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: box-shadow 0.25s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    will-change: transform;
+    contain: layout style;
   }
-  .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
-
-  .card .video-wrap {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .card .thumb-wrap {
     position: relative; width: 100%; aspect-ratio: 16 / 9;
-    background: #000;
+    background: #000; overflow: hidden;
   }
-  .card .video-wrap video {
-    width: 100%; height: 100%; border: none; display: block;
+  .card .thumb-wrap video {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; pointer-events: none;
   }
-
-  .card .info { padding: 18px; }
+  .card .thumb-wrap .play-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.3);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover .thumb-wrap .play-icon { opacity: 1; }
+  .play-icon::after {
+    content: ''; width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+    background-size: 24px; background-position: 55% 50%; background-repeat: no-repeat;
+  }
+  .card .info { padding: 20px; }
   .card .info .cat {
-    font-size: 0.75rem; color: var(--accent); font-weight: 600;
-    letter-spacing: 1px; margin-bottom: 4px;
+    font-size: 0.7rem; color: var(--accent); font-weight: 600;
+    letter-spacing: 2px; margin-bottom: 6px; text-transform: uppercase;
   }
-  .card .info h3 { font-size: 1.0rem; font-weight: 600; margin-bottom: 6px; }
-  .card .info p {
-    font-size: 0.85rem; color: var(--text2);
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  /* 占位卡片 */
-  .card-placeholder .video-wrap {
-    background: #f0f0f0; display: flex; align-items: center; justify-content: center;
-    color: #aaa; font-size: 0.85rem;
-  }
+  .card .info h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: #ddd; }
+  .card .info p { font-size: 0.82rem; color: var(--text2); }
 
-  /* ===== 模式切换 ===== */
-  #student-content { display: none; }
+  /* ===== 切换按钮 ===== */
+  .mode-toggle {
+    text-align: center; margin-bottom: 40px;
+  }
+  .mode-toggle button {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text2); padding: 10px 28px; font-size: 0.85rem;
+    cursor: pointer; letter-spacing: 1px; border-radius: 50px;
+    margin: 0 6px; transition: all 0.3s;
+  }
+  .mode-toggle button.active {
+    background: rgba(212,167,116,0.12); border-color: var(--accent);
+    color: var(--accent);
+  }
 
   /* ===== 页脚 ===== */
   .footer {
-    text-align: center; padding: 30px 20px 50px;
-    color: var(--text2); font-size: 0.85rem;
+    text-align: center; padding: 40px 20px 50px;
+    color: var(--text2); font-size: 0.8rem;
+    border-top: 1px solid var(--border);
   }
-  .footer .contact {
-    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .footer .contact span { color: var(--text); }
+  .footer .contact { margin-bottom: 12px; color: #aaa; }
 
-  @media (max-width: 480px) {
-    .header { padding: 40px 16px 24px; }
-    .header h1 { font-size: 1.4rem; }
-    .gallery { grid-template-columns: 1fr; padding: 0 16px 40px; }
+  /* ===== 响应式 ===== */
+  @media (max-width: 768px) {
+    .nav { padding: 0 20px; height: 56px; }
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 0.8rem; }
+    .hero-overlay { padding: 0 6vw; }
+    .hero-overlay h1 { font-size: 1.8rem; letter-spacing: 3px; }
+    .hero-overlay h2 { font-size: 1.2rem; letter-spacing: 5px; }
+    .hero-enter, .hero-goto { padding: 12px 28px; font-size: 0.82rem; letter-spacing: 2px; }
+    .hero-btns { gap: 10px; }
+    .player-close { top: 16px; right: 16px; }
+    .gallery { grid-template-columns: 1fr; }
+    .profile-card { flex-direction: column; text-align: center; padding: 28px; }
+    .section { padding: 60px 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== 个人信息 ===== -->
-<header class="header">
-  <div class="avatar-wrap" id="avatarBtn" title="点击切换作品集">
-    <img class="avatar" id="avatarImg" src="photos/avatar-work.jpg" alt="头像"
-         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22><rect fill=%22%23ddd%22 width=%2296%22 height=%2296%22/><text x=%2250%%22 y=%2255%%22 text-anchor=%22middle%22 font-size=%2236%22>👤</text></svg>'">
-    <span class="switch-label">切 换</span>
+<!-- ===== 导航栏 ===== -->
+<nav class="nav">
+  <a href="#" class="nav-logo">HUANG WENCHEN</a>
+  <ul class="nav-links">
+    <li><a href="#home">首页</a></li>
+    <li><a href="#work">视频作品</a></li>
+    <li><a href="#ai">AI创作视频</a></li>
+    <li><a href="#script">剧本文案作品</a></li>
+    <li><a href="#photo">摄影作品</a></li>
+    <li><a href="#contact">联系我</a></li>
+  </ul>
+</nav>
+
+<!-- ===== 主视觉 Hero ===== -->
+<div class="hero-wrapper" id="home">
+  <!-- 页面指示器 -->
+  <div class="page-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
   </div>
-  <div id="switchHint" style="font-size:0.75rem;color:#bbb;margin-top:2px;">点击头像切换学生时期作品集</div>
-  <h1 id="modeName">黄闻琛</h1>
-  <div class="role" id="modeRole">视频编导 / 摄影 / 剪辑</div>
-  <p class="bio" id="modeBio">
-    专注宣传片、公益短片、活动记录等视频制作。<br>
-    熟练使用 Premiere Pro、After Effects、DaVinci Resolve。
-  </p>
-</header>
-
-<!-- ============================ -->
-<!--  工作作品集                   -->
-<!-- ============================ -->
-<div id="work-content">
-
-<!-- ===== 宣传片 ===== -->
-<h2 class="section-title">宣传片</h2>
-<section class="gallery">
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250427_《福·见》“福文化”.mp4" poster="videos/thumbs/20250427_《福·见》“福文化”.jpg" controls preload="none"></video>
+  <!-- 第一页 -->
+  <section class="hero-slide" data-full="videos/地推预热横屏_full.mp4" data-title='"福海扬帆 益路启航" 地推预热' data-desc="福建福彩公益主题活动即将登陆福建六城，敬请期待！">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="videos/封面循环_hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay">
+      <h1>黄闻琛</h1>
+      <h2>作品集</h2>
+      <p class="subtitle">视频编导 / 摄影 / 剪辑</p>
+      <div class="hero-btns"><button class="hero-enter">查看此作品</button><button class="hero-goto">查看作品合集</button></div>
     </div>
-    <div class="info">
-      <div class="cat">品牌宣传</div>
-      <h3>福建福彩宣传片《福·见》</h3>
-      <p>福文化主题品牌宣传片，展现福建福彩的公益理念与文化底蕴。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250501_《不凡的你-中国福彩致敬一线福彩人》.mp4" poster="videos/thumbs/20250501_《不凡的你-中国福彩致敬一线福彩人》.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">品牌宣传</div>
-      <h3>致敬一线福彩人</h3>
-      <p>五一劳动节主题短片，展现福彩一线工作者的坚守与奉献。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250321_最终.mp4" poster="videos/thumbs/20250321_最终.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">活动宣传</div>
-      <h3>快乐8 680万赠票活动</h3>
-      <p>"快乐爆棚 好运加倍"福建福彩快乐8游戏赠票活动宣传片。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250526_热嗨3D 瓜分一夏(2).mp4" poster="videos/thumbs/20250526_热嗨3D 瓜分一夏(2).jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">活动宣传</div>
-      <h3>热嗨3D·瓜分一夏</h3>
-      <p>福建福彩3D游戏1500万派奖活动宣传片。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250530_3d精品视频实拍8.mp4" poster="videos/thumbs/20250530_3d精品视频实拍8.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">活动宣传</div>
-      <h3>3D精品视频实拍</h3>
-      <p>3D游戏精品实拍宣传视频，展示活动细节与奖品。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251210_12月快乐8赠票活动(2).mp4" poster="videos/thumbs/20251210_12月快乐8赠票活动(2).jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">活动宣传</div>
-      <h3>快乐8 800万元赠票活动</h3>
-      <p>福建福彩"快乐8"800万元赠票活动宣传片。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250918_地推预热横屏.mp4" poster="videos/thumbs/20250918_地推预热横屏.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">活动宣传</div>
-      <h3>"福海扬帆 益路启航"地推预热</h3>
-      <p>福建福彩公益主题活动六城联动的预热宣传片。</p>
-    </div>
-  </div>
-
-</section>
-
-<!-- ===== 公益短片 ===== -->
-<h2 class="section-title">公益短片</h2>
-<section class="gallery">
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250617_《随手公益，小亦可为》.mp4" poster="videos/thumbs/20250617_《随手公益，小亦可为》.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">公益</div>
-      <h3>随手公益，小亦可为</h3>
-      <p>倡导"随手公益"理念，记录普通人参与公益的温暖瞬间。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250828_发布版横屏.mp4" poster="videos/thumbs/20250828_发布版横屏.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">公益</div>
-      <h3>"双色球·送你一朵小红花"公益捐赠</h3>
-      <p>福建南平公益捐赠活动现场记录，展现福彩公益力量。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251119_合版后.mp4" poster="videos/thumbs/20251119_合版后.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">公益</div>
-      <h3>"福暖家园 益路花开"公益活动</h3>
-      <p>探访福州市儿童福利院，记录福彩公益活动的温暖时刻。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/公益.mp4" poster="videos/thumbs/公益.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">公益</div>
-      <h3>公益短片</h3>
-      <p>公益主题视频作品。</p>
-    </div>
-  </div>
-
-</section>
-
-<!-- ===== 责任彩票 ===== -->
-<h2 class="section-title">责任彩票</h2>
-<section class="gallery">
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251219_责彩视频1.mp4" poster="videos/thumbs/20251219_责彩视频1.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">责任彩票</div>
-      <h3>理性购彩 乐享公益</h3>
-      <p>倡导理性购彩理念，引导公众正确认识彩票的公益属性。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251219_责彩视频2.mp4" poster="videos/thumbs/20251219_责彩视频2.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">责任彩票</div>
-      <h3>禁止向未成年人售彩和兑奖</h3>
-      <p>责任彩票精品视频，呼吁全社会保护未成年人。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251219_责彩视频3.mp4" poster="videos/thumbs/20251219_责彩视频3.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">责任彩票</div>
-      <h3>打击非法彩票 守护财产安全</h3>
-      <p>警示非法彩票危害，引导彩民通过正规渠道购彩。</p>
-    </div>
-  </div>
-
-</section>
-
-<!-- ===== 网点风采 ===== -->
-<h2 class="section-title">网点风采</h2>
-<section class="gallery">
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20250924_发布版.mp4" poster="videos/thumbs/20250924_发布版.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">网点展示</div>
-      <h3>古厝里的福彩店</h3>
-      <p>福州市上下杭福彩销售网点，展现古厝文化与福彩的融合。</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="video-wrap">
-      <video src="videos/20251219_5db1070cbf55a6a02a83ecc0e932a255_raw.mp4" poster="videos/thumbs/20251219_5db1070cbf55a6a02a83ecc0e932a255_raw.jpg" controls preload="none"></video>
-    </div>
-    <div class="info">
-      <div class="cat">网点展示</div>
-      <h3>坚守公益初心 打造优秀网点</h3>
-      <p>泉州市鲤城区福彩优秀销售网点展示。</p>
-    </div>
-  </div>
-
-</section>
-</div><!-- /#work-content -->
-
-<!-- ============================ -->
-<!--  大学作品集                   -->
-<!-- ============================ -->
-<div id="student-content">
-
-  <h2 class="section-title">广告作品</h2>
-  <section class="gallery">
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/黄闻琛雅客广告担任导演 策划 剪辑 摄像.mp4"
-               poster="student-videos/thumbs/黄闻琛雅客广告担任导演 策划 剪辑 摄像.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">广告</div>
-        <h3>雅客广告</h3>
-        <p>获奖作品—担任导演、策划、剪辑、摄像，独立完成广告短片制作。</p>
-      </div>
+    <div class="hero-scroll">
+      <span></span>
+      向下滚动
     </div>
   </section>
-
-  <h2 class="section-title">纪录片</h2>
-  <section class="gallery">
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/纪录片《静谧龙泉》担任 制片 摄像 剪辑.mp4"
-               poster="student-videos/thumbs/纪录片《静谧龙泉》担任 制片 摄像 剪辑.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">纪录片</div>
-        <h3>纪录片《静谧龙泉》</h3>
-        <p>获奖作品—担任制片、摄像、剪辑，记录龙泉地区的自然与人文风貌。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/纪录片《妙笔丹青》第一版.mp4"
-               poster="student-videos/thumbs/纪录片《妙笔丹青》第一版.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">纪录片</div>
-        <h3>纪录片《妙笔丹青》</h3>
-        <p>获奖作品—以笔为媒，以墨为魂，记录传统书画艺术的传承与创新。</p>
-      </div>
+  <!-- 第二页 -->
+  <section class="hero-slide" data-full="videos/福见_福文化_full.mp4" data-title='宣传片《福·见》' data-desc="福建福彩宣传片《福·见》，展现福文化的深厚底蕴。">
+    <video muted loop playsinline preload="auto">
+      <source src="videos/福见_封面循环.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay">
+      <h1>黄闻琛</h1>
+      <h2>作品集</h2>
+      <p class="subtitle">视频编导 / 摄影 / 剪辑</p>
+      <div class="hero-btns"><button class="hero-enter">查看此作品</button><button class="hero-goto">查看作品合集</button></div>
     </div>
   </section>
-
-  <h2 class="section-title">校园采访</h2>
-  <section class="gallery">
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/校园采访《我是广编生》担任采访记者 后期 .mp4"
-               poster="student-videos/thumbs/校园采访《我是广编生》担任采访记者 后期 .jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">校园采访</div>
-        <h3>校园采访《我是广编生》</h3>
-        <p>担任采访记者与后期剪辑，展现广播电视编导专业学生的学习生活。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/校园采访2 担任出镜记者  新闻稿撰写.mp4"
-               poster="student-videos/thumbs/校园采访2 担任出镜记者  新闻稿撰写.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">校园采访</div>
-        <h3>校园采访（二）</h3>
-        <p>担任出镜记者与新闻稿撰写，独立完成采访全流程。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/校园采访3 担任后期剪辑 策划 新闻稿撰写.mp4"
-               poster="student-videos/thumbs/校园采访3 担任后期剪辑 策划 新闻稿撰写.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">校园采访</div>
-        <h3>校园采访（三）</h3>
-        <p>担任后期剪辑、策划与新闻稿撰写，多角色协作完成。</p>
-      </div>
+  <!-- 第三页 -->
+  <section class="hero-slide" data-full="videos/责彩_禁止未成年人_full.mp4" data-title='责任彩票' data-desc="禁止向未成年人售彩和兑奖，保护未成年人健康成长。">
+    <video muted loop playsinline preload="auto">
+      <source src="videos/责彩_禁止未成年人_封面循环.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay">
+      <h1>黄闻琛</h1>
+      <h2>作品集</h2>
+      <p class="subtitle">视频编导 / 摄影 / 剪辑</p>
+      <div class="hero-btns"><button class="hero-enter">查看此作品</button><button class="hero-goto">查看作品合集</button></div>
     </div>
   </section>
+</div>
 
-  <h2 class="section-title">短片创作</h2>
-  <section class="gallery">
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/翻拍《十七岁的单车》担任策划 道具 分镜头创作.mp4"
-               poster="student-videos/thumbs/翻拍《十七岁的单车》担任策划 道具 分镜头创作.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">短片</div>
-        <h3>翻拍《十七岁的单车》</h3>
-        <p>担任策划、道具、分镜头创作，经典电影片段翻拍练习。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/海浪.mp4"
-               poster="student-videos/thumbs/海浪.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">短片</div>
-        <h3>海浪</h3>
-        <p>以海浪为主题的短片创作，探索自然影像的诗意表达。</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="video-wrap">
-        <video src="student-videos/keepblue.mp4"
-               poster="student-videos/thumbs/keepblue.jpg" controls preload="none"></video>
-      </div>
-      <div class="info">
-        <div class="cat">短片</div>
-        <h3>Keep Blue</h3>
-        <p>环保主题创意短片，呼吁保护海洋生态环境。</p>
-      </div>
-    </div>
-  </section>
-
-</div><!-- /#student-content -->
-
-<!-- ===== 联系方式 ===== -->
-<footer class="footer">
-  <div class="contact">
-    <span>📧 1205856025@qq.com</span>
+<!-- ===== 全屏播放器 ===== -->
+<div class="player-section" id="playerSection">
+  <button class="player-close" id="playerClose">✕</button>
+  <div class="player-wrapper">
+    <video id="playerVideo" controls playsinline></video>
   </div>
+  <div class="player-info">
+    <h3 id="playerTitle"></h3>
+    <p id="playerDesc"></p>
+  </div>
+</div>
+
+<!-- ===== 作品展示区 ===== -->
+<div class="section" id="work">
+  <div class="section-header">
+    <h3>精选作品</h3>
+    <div class="line"></div>
+  </div>
+
+  <!-- 模式切换 -->
+  <div class="mode-toggle">
+    <button class="active" data-mode="work">工作作品</button>
+    <button data-mode="student">学生作品</button>
+  </div>
+
+  <!-- ===== 工作作品集 ===== -->
+  <div id="work-content">
+    <!-- 宣传片 -->
+    <h2 class="section-title" style="max-width:1200px;margin:0 auto 16px;padding:0 24px;color:var(--text);">宣传片</h2>
+    <div class="gallery">
+      <div class="card" data-video="videos/地推预热横屏_full.mp4" data-title="福海扬帆 益路启航" data-desc="福建福彩公益主题活动六城联动预热宣传片。">
+        <div class="thumb-wrap">
+          <video src="videos/封面循环_hero.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">活动宣传</div>
+          <h4>"福海扬帆 益路启航" 地推预热</h4>
+          <p>福建福彩公益主题活动即将登陆福建六城，敬请期待！</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/福见_福文化_full.mp4" data-title="宣传片《福·见》" data-desc="福建福彩宣传片《福·见》，展现福文化的深厚底蕴。">
+        <div class="thumb-wrap">
+          <video src="videos/福见_封面循环.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">品牌宣传</div>
+          <h4>宣传片《福·见》</h4>
+          <p>福文化主题品牌宣传片，展现福建福彩的公益理念与文化底蕴。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20250501_《不凡的你-中国福彩致敬一线福彩人》.mp4" data-title="致敬一线福彩人" data-desc="五一劳动节主题短片，展现福彩一线工作者的坚守与奉献。">
+        <div class="thumb-wrap">
+          <video src="videos/20250501_《不凡的你-中国福彩致敬一线福彩人》.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">品牌宣传</div>
+          <h4>致敬一线福彩人</h4>
+          <p>五一劳动节主题短片，展现福彩一线工作者的坚守与奉献。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20250321_最终.mp4" data-title="快乐8 680万赠票活动" data-desc="快乐爆棚 好运加倍——福建福彩快乐8游戏赠票活动宣传片。">
+        <div class="thumb-wrap">
+          <video src="videos/20250321_最终.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">活动宣传</div>
+          <h4>快乐8 680万赠票活动</h4>
+          <p>"快乐爆棚 好运加倍"福建福彩快乐8游戏赠票活动宣传片。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20250526_热嗨3D 瓜分一夏(2).mp4" data-title="热嗨3D·瓜分一夏" data-desc="福建福彩3D游戏1500万派奖活动宣传片。">
+        <div class="thumb-wrap">
+          <video src="videos/20250526_热嗨3D 瓜分一夏(2).mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">活动宣传</div>
+          <h4>热嗨3D·瓜分一夏</h4>
+          <p>福建福彩3D游戏1500万派奖活动宣传片。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20250530_3d精品视频实拍8.mp4" data-title="3D精品视频实拍" data-desc="3D游戏精品实拍宣传视频，展示活动细节与奖品。">
+        <div class="thumb-wrap">
+          <video src="videos/20250530_3d精品视频实拍8.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">活动宣传</div>
+          <h4>3D精品视频实拍</h4>
+          <p>3D游戏精品实拍宣传视频，展示活动细节与奖品。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20251210_12月快乐8赠票活动(2).mp4" data-title="快乐8 800万元赠票活动" data-desc="福建福彩快乐8 800万元赠票活动宣传片。">
+        <div class="thumb-wrap">
+          <video src="videos/20251210_12月快乐8赠票活动(2).mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">活动宣传</div>
+          <h4>快乐8 800万元赠票活动</h4>
+          <p>福建福彩"快乐8"800万元赠票活动宣传片。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 公益短片 ===== -->
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">公益短片</h2>
+    <div class="gallery">
+      <div class="card" data-video="videos/20250617_《随手公益，小亦可为》.mp4" data-title="随手公益，小亦可为" data-desc="倡导随手公益理念，记录普通人参与公益的温暖瞬间。">
+        <div class="thumb-wrap">
+          <video src="videos/20250617_《随手公益，小亦可为》.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">公益</div>
+          <h4>随手公益，小亦可为</h4>
+          <p>倡导"随手公益"理念，记录普通人参与公益的温暖瞬间。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20250828_发布版横屏.mp4" data-title="双色球·送你一朵小红花" data-desc="福建南平公益捐赠活动现场记录，展现福彩公益力量。">
+        <div class="thumb-wrap">
+          <video src="videos/20250828_发布版横屏.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">公益</div>
+          <h4>"双色球·送你一朵小红花"公益捐赠</h4>
+          <p>福建南平公益捐赠活动现场记录，展现福彩公益力量。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20251119_合版后.mp4" data-title="福暖家园 益路花开" data-desc="探访福州市儿童福利院，记录福彩公益活动的温暖时刻。">
+        <div class="thumb-wrap">
+          <video src="videos/20251119_合版后.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">公益</div>
+          <h4>"福暖家园 益路花开"公益活动</h4>
+          <p>探访福州市儿童福利院，记录福彩公益活动的温暖时刻。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/公益.mp4" data-title="公益短片" data-desc="公益主题视频作品。">
+        <div class="thumb-wrap">
+          <video src="videos/公益.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">公益</div>
+          <h4>公益短片</h4>
+          <p>公益主题视频作品。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 责任彩票 ===== -->
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">责任彩票</h2>
+    <div class="gallery">
+      <div class="card" data-video="videos/20251219_责彩视频1.mp4" data-title="理性购彩 乐享公益" data-desc="倡导理性购彩理念，引导公众正确认识彩票的公益属性。">
+        <div class="thumb-wrap">
+          <video src="videos/20251219_责彩视频1.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">责任彩票</div>
+          <h4>理性购彩 乐享公益</h4>
+          <p>倡导理性购彩理念，引导公众正确认识彩票的公益属性。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/责彩_禁止未成年人_full.mp4" data-title="责任彩票" data-desc="禁止向未成年人售彩和兑奖，保护未成年人健康成长。">
+        <div class="thumb-wrap">
+          <video src="videos/责彩_禁止未成年人_封面循环.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">责任彩票</div>
+          <h4>禁止向未成年人售彩和兑奖</h4>
+          <p>责任彩票精品视频，呼吁全社会共同保护未成年人。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20251219_责彩视频3.mp4" data-title="打击非法彩票" data-desc="警示非法彩票危害，引导彩民通过正规渠道购彩。">
+        <div class="thumb-wrap">
+          <video src="videos/20251219_责彩视频3.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">责任彩票</div>
+          <h4>打击非法彩票 守护财产安全</h4>
+          <p>警示非法彩票危害，引导彩民通过正规渠道购彩。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 网点风采 ===== -->
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">网点风采</h2>
+    <div class="gallery">
+      <div class="card" data-video="videos/20250924_发布版.mp4" data-title="古厝里的福彩店" data-desc="福州市上下杭福彩销售网点，展现古厝文化与福彩的融合。">
+        <div class="thumb-wrap">
+          <video src="videos/20250924_发布版.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">网点展示</div>
+          <h4>古厝里的福彩店</h4>
+          <p>福州市上下杭福彩销售网点，展现古厝文化与福彩的融合。</p>
+        </div>
+      </div>
+      <div class="card" data-video="videos/20251219_5db1070cbf55a6a02a83ecc0e932a255_raw.mp4" data-title="坚守公益初心 打造优秀网点" data-desc="泉州市鲤城区福彩优秀销售网点展示。">
+        <div class="thumb-wrap">
+          <video src="videos/20251219_5db1070cbf55a6a02a83ecc0e932a255_raw.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">网点展示</div>
+          <h4>坚守公益初心 打造优秀网点</h4>
+          <p>泉州市鲤城区福彩优秀销售网点展示。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 学生作品集 ===== -->
+  <div id="student-content" style="display:none;">
+
+    <h2 class="section-title" style="max-width:1200px;margin:0 auto 16px;padding:0 24px;color:var(--text);">广告作品</h2>
+    <div class="gallery">
+      <div class="card" data-video="student-videos/黄闻琛雅客广告担任导演 策划 剪辑 摄像.mp4" data-title="雅客广告" data-desc="获奖作品—担任导演、策划、剪辑、摄像，独立完成广告短片制作。">
+        <div class="thumb-wrap">
+          <video src="student-videos/黄闻琛雅客广告担任导演 策划 剪辑 摄像.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">广告</div>
+          <h4>雅客广告</h4>
+          <p>获奖作品—担任导演、策划、剪辑、摄像，独立完成广告短片制作。</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">纪录片</h2>
+    <div class="gallery">
+      <div class="card" data-video="student-videos/纪录片《静谧龙泉》担任 制片 摄像 剪辑.mp4" data-title="纪录片《静谧龙泉》" data-desc="获奖作品—担任制片、摄像、剪辑，记录龙泉地区的自然与人文风貌。">
+        <div class="thumb-wrap">
+          <video src="student-videos/纪录片《静谧龙泉》担任 制片 摄像 剪辑.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">纪录片</div>
+          <h4>纪录片《静谧龙泉》</h4>
+          <p>获奖作品—担任制片、摄像、剪辑，记录龙泉地区的自然与人文风貌。</p>
+        </div>
+      </div>
+      <div class="card" data-video="student-videos/纪录片《妙笔丹青》第一版.mp4" data-title="纪录片《妙笔丹青》" data-desc="获奖作品—以笔为媒，以墨为魂，记录传统书画艺术的传承与创新。">
+        <div class="thumb-wrap">
+          <video src="student-videos/纪录片《妙笔丹青》第一版.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">纪录片</div>
+          <h4>纪录片《妙笔丹青》</h4>
+          <p>获奖作品—以笔为媒，以墨为魂，记录传统书画艺术的传承与创新。</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">校园采访</h2>
+    <div class="gallery">
+      <div class="card" data-video="student-videos/校园采访《我是广编生》担任采访记者 后期 .mp4" data-title="校园采访《我是广编生》" data-desc="担任采访记者与后期剪辑，展现广播电视编导专业学生的学习生活。">
+        <div class="thumb-wrap">
+          <video src="student-videos/校园采访《我是广编生》担任采访记者 后期 .mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">校园采访</div>
+          <h4>校园采访《我是广编生》</h4>
+          <p>担任采访记者与后期剪辑，展现广播电视编导专业学生的学习生活。</p>
+        </div>
+      </div>
+      <div class="card" data-video="student-videos/校园采访2 担任出镜记者  新闻稿撰写.mp4" data-title="校园采访（二）" data-desc="担任出镜记者与新闻稿撰写，独立完成采访全流程。">
+        <div class="thumb-wrap">
+          <video src="student-videos/校园采访2 担任出镜记者  新闻稿撰写.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">校园采访</div>
+          <h4>校园采访（二）</h4>
+          <p>担任出镜记者与新闻稿撰写，独立完成采访全流程。</p>
+        </div>
+      </div>
+      <div class="card" data-video="student-videos/校园采访3 担任后期剪辑 策划 新闻稿撰写.mp4" data-title="校园采访（三）" data-desc="担任后期剪辑、策划与新闻稿撰写，多角色协作完成。">
+        <div class="thumb-wrap">
+          <video src="student-videos/校园采访3 担任后期剪辑 策划 新闻稿撰写.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">校园采访</div>
+          <h4>校园采访（三）</h4>
+          <p>担任后期剪辑、策划与新闻稿撰写，多角色协作完成。</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="max-width:1200px;margin:40px auto 16px;padding:0 24px;color:var(--text);">短片创作</h2>
+    <div class="gallery">
+      <div class="card" data-video="student-videos/翻拍《十七岁的单车》担任策划 道具 分镜头创作.mp4" data-title="翻拍《十七岁的单车》" data-desc="担任策划、道具、分镜头创作，经典电影片段翻拍练习。">
+        <div class="thumb-wrap">
+          <video src="student-videos/翻拍《十七岁的单车》担任策划 道具 分镜头创作.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">短片</div>
+          <h4>翻拍《十七岁的单车》</h4>
+          <p>担任策划、道具、分镜头创作，经典电影片段翻拍练习。</p>
+        </div>
+      </div>
+      <div class="card" data-video="student-videos/海浪.mp4" data-title="海浪" data-desc="以海浪为主题的短片创作，探索自然影像的诗意表达。">
+        <div class="thumb-wrap">
+          <video src="student-videos/海浪.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">短片</div>
+          <h4>海浪</h4>
+          <p>以海浪为主题的短片创作，探索自然影像的诗意表达。</p>
+        </div>
+      </div>
+      <div class="card" data-video="student-videos/keepblue.mp4" data-title="Keep Blue" data-desc="环保主题创意短片，呼吁保护海洋生态环境。">
+        <div class="thumb-wrap">
+          <video src="student-videos/keepblue.mp4" muted loop playsinline preload="none"></video>
+          <div class="play-icon"></div>
+        </div>
+        <div class="info">
+          <div class="cat">短片</div>
+          <h4>Keep Blue</h4>
+          <p>环保主题创意短片，呼吁保护海洋生态环境。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 关于 ===== -->
+<div class="section" id="about">
+  <div class="section-header">
+    <h3>关于我</h3>
+    <div class="line"></div>
+  </div>
+  <div class="profile-card">
+    <img class="avatar" src="photos/avatar-work.jpg" alt="头像"
+         onerror="this.style.display='none'">
+    <div class="info">
+      <h4>黄闻琛</h4>
+      <p class="role">视频编导 / 摄影 / 剪辑</p><br>
+      <p style="color:var(--text2);font-size:0.9rem;">
+        专注宣传片、公益短片、活动记录等视频制作。<br>
+        熟练使用 Premiere Pro、After Effects、DaVinci Resolve。
+      </p>
+    </div>
+    <img class="qrcode" src="photos/qrcode.jpg" alt="微信二维码">
+  </div>
+</div>
+
+<!-- ===== 联系 ===== -->
+<footer class="footer" id="contact">
+  <div class="contact">📧 1205856025@qq.com</div>
   <p>&copy; 2025 黄闻琛</p>
 </footer>
 
 <script>
-  // ===== 切换工作 / 学生作品集 =====
-  const avatarBtn = document.getElementById('avatarBtn');
-  const avatarImg = document.getElementById('avatarImg');
-  const modeName  = document.getElementById('modeName');
-  const modeRole  = document.getElementById('modeRole');
-  const modeBio   = document.getElementById('modeBio');
-  const workContent   = document.getElementById('work-content');
-  const studentContent = document.getElementById('student-content');
+  // ===== 全页滑动 =====
+  const heroWrapper = document.querySelector('.hero-wrapper');
+  const heroSlides = document.querySelectorAll('.hero-slide');
+  const pageDots = document.querySelectorAll('.page-dots .dot');
+  let currentPage = 0;
 
-  const switchHint = document.getElementById('switchHint');
+  // 确保首屏视频自动播放
+  const firstVideo = heroSlides[0].querySelector('video');
+  if (firstVideo) firstVideo.play().catch(() => {});
 
-  let isWorkMode = true;
-
-  // 两套信息 — 改成你自己的
-  const workInfo = {
-    avatar: 'photos/avatar-work.jpg',
-    name: '黄闻琛',
-    role: '视频编导 / 摄影 / 剪辑',
-    bio: '专注宣传片、公益短片、活动记录等视频制作。<br>熟练使用 Premiere Pro、After Effects、DaVinci Resolve。',
-    hint: '点击头像切换学生时期作品集'
-  };
-  const studentInfo = {
-    avatar: 'photos/avatar-student.jpg',        // 换成你的学生时期照片
-    name: '黄闻琛',
-    role: '数字媒体专业 — 在读学生',
-    bio: '大学期间主修数字媒体，学习视频拍摄与后期制作。<br>熟练使用 Premiere Pro、剪映等工具。',
-    hint: '点击头像切换工作时期作品集'
-  };
-
-  avatarBtn.addEventListener('click', () => {
-    isWorkMode = !isWorkMode;
-    const info = isWorkMode ? workInfo : studentInfo;
-    avatarImg.src = info.avatar;
-    modeName.textContent  = info.name;
-    modeRole.textContent  = info.role;
-    modeBio.innerHTML     = info.bio;
-    switchHint.textContent = info.hint;
-    workContent.style.display   = isWorkMode ? 'block' : 'none';
-    studentContent.style.display = isWorkMode ? 'none' : 'block';
-    // 滚动到顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 监听滚动，更新指示器 & 控制视频播放
+  heroWrapper.addEventListener('scroll', () => {
+    const idx = Math.round(heroWrapper.scrollTop / heroWrapper.clientHeight);
+    if (idx !== currentPage) {
+      currentPage = idx;
+      pageDots.forEach(d => d.classList.remove('active'));
+      if (pageDots[idx]) pageDots[idx].classList.add('active');
+      // 暂停所有视频，只播当前页并从开头开始
+      heroSlides.forEach((slide, i) => {
+        const v = slide.querySelector('video');
+        if (!v) return;
+        if (i === idx) {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      });
+    }
   });
 
-  // ===== 同一时间只能播放一个视频 =====
-  function bindSinglePlay() {
-    document.querySelectorAll('video').forEach(v => {
-      v.addEventListener('play', () => {
-        document.querySelectorAll('video').forEach(other => {
-          if (other !== v) other.pause();
-        });
+  // 指示器点击跳转
+  pageDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = Array.from(pageDots).indexOf(dot);
+      // 先切换视频再滚动
+      heroSlides.forEach((slide, i) => {
+        const v = slide.querySelector('video');
+        if (!v) return;
+        if (i === idx) { v.currentTime = 0; v.play().catch(() => {}); }
+        else { v.pause(); }
       });
+      currentPage = idx;
+      pageDots.forEach(d => d.classList.remove('active'));
+      if (pageDots[idx]) pageDots[idx].classList.add('active');
+      heroWrapper.scrollTo({ top: idx * heroWrapper.clientHeight, behavior: 'smooth' });
     });
+  });
+
+  // ===== Hero 按钮：点击进入全屏播放器 =====
+  const playerSection = document.getElementById('playerSection');
+  const playerVideo = document.getElementById('playerVideo');
+  const playerTitle = document.getElementById('playerTitle');
+  const playerDesc = document.getElementById('playerDesc');
+  const playerClose = document.getElementById('playerClose');
+
+  function openPlayer(src, title, desc) {
+    playerVideo.src = src;
+    playerVideo.poster = '';
+    playerTitle.textContent = title;
+    playerDesc.textContent = desc;
+    playerSection.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    playerVideo.play().catch(() => {});
   }
-  bindSinglePlay();
-  // 切换后重新绑定（DOM 变化后）
-  const observer = new MutationObserver(() => bindSinglePlay());
-  document.querySelectorAll('#work-content, #student-content').forEach(el => {
-    observer.observe(el, { childList: true, subtree: true });
+
+  function closePlayer() {
+    playerVideo.pause();
+    playerVideo.src = '';
+    playerSection.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // "查看此作品"按钮 → 打开全屏播放器
+  document.querySelectorAll('.hero-enter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slide = btn.closest('.hero-slide');
+      openPlayer(
+        slide.dataset.full,
+        slide.dataset.title,
+        slide.dataset.desc
+      );
+    });
+  });
+
+  // "查看作品合集"按钮 → 跳转到作品展示区
+  document.querySelectorAll('.hero-goto').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  playerClose.addEventListener('click', closePlayer);
+
+  playerSection.addEventListener('click', (e) => {
+    if (e.target === playerSection) closePlayer();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePlayer();
+  });
+
+  // ===== 卡片点击：打开全屏播放器 =====
+  document.querySelectorAll('.card[data-video]').forEach(card => {
+    card.addEventListener('click', () => {
+      openPlayer(
+        card.dataset.video,
+        card.dataset.title,
+        card.dataset.desc
+      );
+    });
+  });
+
+  // ===== 卡片悬停：懒加载预览视频 =====
+  document.querySelectorAll('.card .thumb-wrap video').forEach(v => {
+    const card = v.closest('.card');
+    let loaded = false;
+    card.addEventListener('mouseenter', () => {
+      if (!loaded) { v.load(); loaded = true; }
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    });
+    card.addEventListener('mouseleave', () => {
+      v.pause();
+    });
+  });
+
+  // ===== 模式切换 =====
+  document.querySelectorAll('.mode-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mode-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mode = btn.dataset.mode;
+      document.getElementById('work-content').style.display = mode === 'work' ? '' : 'none';
+      document.getElementById('student-content').style.display = mode === 'student' ? '' : 'none';
+    });
+  });
+
+  // ===== 导航栏透明度变化 =====
+  const nav = document.querySelector('.nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      nav.style.background = 'rgba(255,255,255,0.15)';
+    } else {
+      nav.style.background = 'rgba(255,255,255,0.08)';
+    }
+  });
+
+  // ===== 平滑滚动 =====
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = link.getAttribute('href').substring(1);
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
   });
 </script>
 </body>
