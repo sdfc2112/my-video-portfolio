@@ -27,6 +27,17 @@
     overflow-x: hidden;
   }
 
+  /* ===== 首次进入渐显 ===== */
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .nav, .hero-wrapper {
+    opacity: 0;
+    animation: fadeIn 1.6s ease-out forwards;
+  }
+  .hero-wrapper { animation-delay: 0.15s; }
+
   /* ===== 导航栏 ===== */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
